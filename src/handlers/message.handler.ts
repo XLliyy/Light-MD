@@ -70,10 +70,11 @@ export async function handleMessage(sock: WASocket, m: WAMessage) {
   if (extendedMessage.key.fromMe) {
     return;
   }
-  
+
   // 3. Extract text
   const msg = extendedMessage.message!;
-  const messageText = msg.conversation || msg.extendedTextMessage?.text || msg.imageMessage?.caption || '';
+  const messageText =
+    msg.conversation || msg.extendedTextMessage?.text || msg.imageMessage?.caption || '';
   if (!messageText) {
     return;
   }
@@ -82,11 +83,11 @@ export async function handleMessage(sock: WASocket, m: WAMessage) {
   if (!messageText.startsWith(COMMAND_PREFIX)) {
     return;
   }
-  
+
   // 5. Parse
   const args = messageText.slice(COMMAND_PREFIX.length).trim().split(/ +/);
   const commandName = args.shift()?.toLowerCase();
-  
+
   if (!commandName) {
     return;
   }
@@ -100,7 +101,7 @@ export async function handleMessage(sock: WASocket, m: WAMessage) {
     } catch (error) {
       logger.error(error, `Error executing command "${commandName}":`);
       await sock.sendMessage(m.key.remoteJid, {
-        text: `Oops! An error occurred while trying to execute the \`${commandName}\` command.`
+        text: `Oops! An error occurred while trying to execute the \`${commandName}\` command.`,
       });
     }
   } else {

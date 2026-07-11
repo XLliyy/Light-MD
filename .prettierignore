@@ -1,0 +1,4 @@
+node_modules
+bun.lock
+.prettierrc
+x99-logs.txt
