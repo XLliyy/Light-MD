@@ -10,12 +10,15 @@ import { join } from 'path';
 import type { KeyStore, RobustAuthState } from '../types/index.d.ts';
 import logger from '../utils/logger.ts';
 
-const KEY_MAP: { [key: string]: 'pre-key' | 'session' | 'sender-key' | 'app-state-sync-key' | 'app-state-sync-version' } = {
+const KEY_MAP: {
+  [key: string]:
+    'pre-key' | 'session' | 'sender-key' | 'app-state-sync-key' | 'app-state-sync-version';
+} = {
   'pre-key': 'pre-key',
-  'session': 'session',
+  session: 'session',
   'sender-key': 'sender-key',
   'app-state-sync-key': 'app-state-sync-key',
-  'app-state-sync-version': 'app-state-sync-version'
+  'app-state-sync-version': 'app-state-sync-version',
 };
 
 /**
@@ -84,34 +87,40 @@ export async function useRobustFileAuthState(folder: string): Promise<RobustAuth
       }
     }
   } catch (error) {
-      logger.error(error, 'Failed to read session files');
+    logger.error(error, 'Failed to read session files');
   }
 
   return {
     state: {
       creds,
-      keys: makeCacheableSignalKeyStore({
-        get: async (type, ids) => {
-          const data: { [key: string]: any } = {};
-          for (const id of ids) {
-            const value = keyStore[`${type}-${id}`];
-            if (value) {
-              data[id] = value;
+      keys: makeCacheableSignalKeyStore(
+        {
+          get: async (type, ids) => {
+            const data: { [key: string]: any } = {};
+            for (const id of ids) {
+              const value = keyStore[`${type}-${id}`];
+              if (value) {
+                data[id] = value;
+              }
             }
-          }
-          return data;
-        },
-        set: async (data) => {
-          for (const [type, inner] of Object.entries(data) as [string, any][]) {
-            for (const [id, value] of Object.entries(inner) as [string, any][]) {
-              const key = `${type}-${id}`;
-              keyStore[key] = value;
-              const filePath = join(folder, `${key}.json`);
-              await atomicWrite(filePath, Buffer.from(JSON.stringify(value, BufferJSON.replacer), 'utf-8'));
+            return data;
+          },
+          set: async (data) => {
+            for (const [type, inner] of Object.entries(data) as [string, any][]) {
+              for (const [id, value] of Object.entries(inner) as [string, any][]) {
+                const key = `${type}-${id}`;
+                keyStore[key] = value;
+                const filePath = join(folder, `${key}.json`);
+                await atomicWrite(
+                  filePath,
+                  Buffer.from(JSON.stringify(value, BufferJSON.replacer), 'utf-8'),
+                );
+              }
             }
-          }
+          },
         },
-      }, logger),
+        logger,
+      ),
     },
     saveCreds,
   };

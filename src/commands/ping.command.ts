@@ -5,16 +5,18 @@ import logger from '../utils/logger.ts';
 
 const pingCommand: Command = {
   name: 'ping',
-  aliases: ['p', 'test'],
+  aliases: ['p'],
   description: 'Checks if the bot is responsive and measures latency.',
-  
+
   execute: async (sock: WASocket, message: ExtendedWAMessage, args: string[]) => {
     try {
       await message.react('⏳');
-      
+
+      const extraInfo = args.length > 0 ? `\nArgs: ${args.join(' ')}` : '';
+
       const startTime = Date.now();
-      
-      const sentMsg = await message.reply('Pinging...');
+
+      const sentMsg = await message.reply(`Pinging...${extraInfo}`);
 
       const endTime = Date.now();
       const latency = endTime - startTime;
@@ -31,7 +33,6 @@ const pingCommand: Command = {
       }
 
       await message.react('✅');
-
     } catch (error) {
       logger.error(error, 'Error in ping command:');
       await message.react('❌');

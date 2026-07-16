@@ -1,9 +1,12 @@
 // src/types/index.d.ts
 import type {
   proto,
-  SignalKeyStore, AuthenticationCreds, AuthenticationState,
-  WASocket, WAMessage,
-  MiscMessageGenerationOptions
+  SignalKeyStore,
+  AuthenticationCreds,
+  AuthenticationState,
+  WASocket,
+  WAMessage,
+  MiscMessageGenerationOptions,
 } from 'baileys';
 
 export type KeyStore = { [key: string]: any };
@@ -22,9 +25,5 @@ export interface Command {
   name: string;
   aliases?: string[];
   description: string;
-  execute: (
-    sock: WASocket,
-    message: ExtendedWAMessage,
-    args: string[]
-  ) => Promise<void>;
+  execute: (sock: WASocket, message: ExtendedWAMessage, args: string[]) => Promise<void>;
 }
