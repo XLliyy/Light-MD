@@ -32,7 +32,7 @@ export async function startWhatsAppConnection() {
 
   const sock = makeWASocket({
     version,
-    browser: Browsers.macOS('Desktop'),
+    browser: ["Mac OS", "Safari", "26.0"],
     connectTimeoutMs: 15000,
     keepAliveIntervalMs: 25000,
     logger,
