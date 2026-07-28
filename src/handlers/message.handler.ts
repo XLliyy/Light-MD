@@ -1,25 +1,23 @@
-// src/handlers/message.handler.ts
 import type { proto, WAMessage, WASocket } from 'baileys';
-import type { Command, ExtendedWAMessage } from '../types/index';
+import type { Command, ExtendedWAMessage } from '../types/index.ts';
 import { readdir } from 'fs/promises';
-import { join } from 'path';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
 import logger from '../utils/logger.ts';
 
 const COMMAND_PREFIX = '/';
-
 const commands = new Map<string, Command>();
 
-/**
- * Import all commands
- */
 async function loadCommands() {
-  const commandsPath = join(process.cwd(), 'src/commands');
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = dirname(__filename);
+  const commandsPath = join(__dirname, '..', 'commands');
+
   try {
     const commandFiles = await readdir(commandsPath);
     for (const file of commandFiles) {
-      if (file.endsWith('.command.ts')) {
+      if (file.endsWith('.command.ts') || file.endsWith('.command.js')) {
         const filePath = join(commandsPath, file);
-        // Bun's dynamic import is very fast
         const { default: command } = await import(filePath);
 
         if (command && typeof command.execute === 'function') {
@@ -38,61 +36,88 @@ async function loadCommands() {
   }
 }
 
-/**
- * @param sock (WASocket)
- * @param m (WAMessage)
- */
-export async function handleMessage(sock: WASocket, m: WAMessage) {
-  // 1. Ignore void message
-  if (!m.message || !m.key.remoteJid) {
-    return;
+await loadCommands();
+
+function unwrapMessage(message: proto.IMessage | null | undefined): proto.IMessage | undefined {
+  if (!message) return undefined;
+  return (
+    message.ephemeralMessage?.message ||
+    message.viewOnceMessage?.message ||
+    message.viewOnceMessageV2?.message ||
+    message.viewOnceMessageV2Extension?.message ||
+    message.documentWithCaptionMessage?.message ||
+    message
+  );
+}
+
+function extractMessageText(message: proto.IMessage | null | undefined): string {
+  const msg = unwrapMessage(message);
+  if (!msg) return '';
+
+  return (
+    msg.conversation ||
+    msg.extendedTextMessage?.text ||
+    msg.imageMessage?.caption ||
+    msg.videoMessage?.caption ||
+    msg.documentMessage?.caption ||
+    ''
+  );
+}
+
+function getContextInfo(message: proto.IMessage | null | undefined): proto.IContextInfo | undefined {
+  const msg = unwrapMessage(message);
+  if (!msg) return undefined;
+
+  for (const key of Object.keys(msg) as (keyof typeof msg)[]) {
+    const msgContent = msg[key];
+    if (msgContent && typeof msgContent === 'object' && 'contextInfo' in msgContent) {
+      return (msgContent as any).contextInfo as proto.IContextInfo;
+    }
   }
+  return undefined;
+}
+
+export async function handleMessage(sock: WASocket, m: WAMessage) {
+  if (!m.message || !m.key.remoteJid || m.key.fromMe) return;
 
   const extendedMessage = m as ExtendedWAMessage;
-  extendedMessage.reply = async (text: string, options = {}): Promise<proto.WebMessageInfo> => {
-    const result = await sock.sendMessage(m.key.remoteJid!, { text }, { quoted: m, ...options });
-    if (!result) throw new Error('Failed to send reply');
-    return result as proto.WebMessageInfo;
+
+  extendedMessage.reply = async (text: string, options = {}) => {
+    return await sock.sendMessage(m.key.remoteJid!, { text }, { quoted: m, ...options });
+  };
+  extendedMessage.react = async (emoji: string) => {
+    return await sock.sendMessage(m.key.remoteJid!, { react: { text: emoji, key: m.key } });
   };
 
-  extendedMessage.react = async (emoji: string): Promise<proto.WebMessageInfo> => {
-    const result = await sock.sendMessage(m.key.remoteJid!, {
-      react: {
-        text: emoji,
-        key: m.key,
+  const contextInfo = getContextInfo(extendedMessage.message);
+  if (contextInfo && contextInfo.quotedMessage) {
+    const senderJid = contextInfo.participant || '';
+    const botJidId = sock.user?.id?.split(':')[0] || '';
+    const isFromMe = senderJid.startsWith(botJidId);
+
+    extendedMessage.quoted = {
+      message: contextInfo.quotedMessage,
+      senderJid: senderJid,
+      text: extractMessageText(contextInfo.quotedMessage),
+      key: {
+        remoteJid: m.key.remoteJid,
+        fromMe: isFromMe,
+        id: contextInfo.stanzaId,
+        participant: senderJid,
       },
-    });
-    if (!result) throw new Error('Failed to send reaction');
-    return result as proto.WebMessageInfo;
-  };
-
-  // 2. Ignore bot message
-  if (extendedMessage.key.fromMe) {
-    return;
+    };
+  } else {
+    extendedMessage.quoted = null;
   }
 
-  // 3. Extract text
-  const msg = extendedMessage.message!;
-  const messageText =
-    msg.conversation || msg.extendedTextMessage?.text || msg.imageMessage?.caption || '';
-  if (!messageText) {
-    return;
-  }
+  const messageText = extractMessageText(extendedMessage.message);
+  if (!messageText || !messageText.startsWith(COMMAND_PREFIX)) return;
 
-  // 4. Is command
-  if (!messageText.startsWith(COMMAND_PREFIX)) {
-    return;
-  }
-
-  // 5. Parse
-  const args = messageText.slice(COMMAND_PREFIX.length).trim().split(/ +/);
+  const args = messageText.slice(COMMAND_PREFIX.length).trim().split(/\s+/);
   const commandName = args.shift()?.toLowerCase();
 
-  if (!commandName) {
-    return;
-  }
+  if (!commandName) return;
 
-  // 6. Command execution
   const command = commands.get(commandName);
   if (command) {
     try {
@@ -100,16 +125,9 @@ export async function handleMessage(sock: WASocket, m: WAMessage) {
       await command.execute(sock, extendedMessage, args);
     } catch (error) {
       logger.error(error, `Error executing command "${commandName}":`);
-      await sock.sendMessage(m.key.remoteJid, {
-        text: `Oops! An error occurred while trying to execute the \`${commandName}\` command.`,
-      });
+      await extendedMessage.reply(`Oops! An error occurred while executing the \`${commandName}\` command.`);
     }
   } else {
-    logger.warn(`Command not found: ${commandName}`);
-    // await sock.sendMessage(m.key.remoteJid, {
-    //   text: `Command \`${commandName}\` not found. Type \`${COMMAND_PREFIX}menu\` to see available commands.`
-    // });
+    logger.debug(`Command not found: ${commandName}`);
   }
 }
-
-loadCommands();

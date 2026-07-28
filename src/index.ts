@@ -1,20 +1,22 @@
-// src/index.ts
-import { startWhatsAppConnection } from './connection.ts';
+import { startWhatsAppConnection, globalSock } from './connection.ts';
 import logger from './utils/logger.ts';
 
 async function main() {
   try {
-    const sock = await startWhatsAppConnection();
+    await startWhatsAppConnection();
 
-    // Stop bot
     const shutdown = async (signal: string) => {
       logger.info(`Received ${signal}. Shutting down gracefully...`);
-      // Close connection
-      await sock.logout('Graceful shutdown initiated');
+      if (globalSock.current) {
+         try {
+             globalSock.current.end(undefined);
+         } catch (error) {
+             logger.error(error, 'Error during socket shutdown');
+         }
+      }
       process.exit(0);
     };
 
-    // Watch (Ctrl+C) and kill
     process.on('SIGINT', () => shutdown('SIGINT'));
     process.on('SIGTERM', () => shutdown('SIGTERM'));
   } catch (error) {

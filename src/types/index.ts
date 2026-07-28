@@ -1,8 +1,5 @@
-// src/types/index.d.ts
 import type {
   proto,
-  SignalKeyStore,
-  AuthenticationCreds,
   AuthenticationState,
   WASocket,
   WAMessage,
@@ -12,8 +9,15 @@ import type {
 export type KeyStore = { [key: string]: any };
 
 export type ExtendedWAMessage = WAMessage & {
-  reply: (text: string, options?: MiscMessageGenerationOptions) => Promise<proto.WebMessageInfo>;
-  react: (emoji: string) => Promise<proto.WebMessageInfo>;
+  reply: (text: string, options?: MiscMessageGenerationOptions) => Promise<proto.WebMessageInfo | undefined>;
+  react: (emoji: string) => Promise<proto.WebMessageInfo | undefined>;
+
+  quoted?: {
+    message: proto.IMessage;
+    senderJid: string;
+    key: proto.IMessageKey;
+    text: string;
+  } | null;
 };
 
 export type RobustAuthState = {

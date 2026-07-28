@@ -1,23 +1,19 @@
-// src/commands/ping.command.ts
 import type { WASocket } from 'baileys';
-import type { Command, ExtendedWAMessage } from '../types/index.d.ts';
+import type { Command, ExtendedWAMessage } from '../types/index.ts';
 import logger from '../utils/logger.ts';
 
 const testCommand: Command = {
   name: 'test',
-  aliases: ['test', '99'],
-  description: '.',
+  aliases: ['t'],
+  description: 'A simple test command.',
 
   execute: async (sock: WASocket, message: ExtendedWAMessage, args: string[]) => {
     try {
       const response = args.length > 0 ? `Received args: ${args.join(' ')}` : 'No args provided.';
-
-      await sock.sendMessage(message.key.remoteJid!, { text: response });
+      await message.reply(response);
     } catch (error) {
       logger.error(error, 'Error in test command:');
-      await sock.sendMessage(message.key.remoteJid!, {
-        text: 'An error occurred while executing the test command.',
-      });
+      await message.reply('An error occurred while executing the test command.');
     }
   },
 };

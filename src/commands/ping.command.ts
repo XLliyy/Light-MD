@@ -1,6 +1,5 @@
-// src/commands/ping.command.ts
 import type { WASocket } from 'baileys';
-import type { Command, ExtendedWAMessage } from '../types/index.d.ts';
+import type { Command, ExtendedWAMessage } from '../types/index.ts';
 import logger from '../utils/logger.ts';
 
 const pingCommand: Command = {
@@ -11,25 +10,20 @@ const pingCommand: Command = {
   execute: async (sock: WASocket, message: ExtendedWAMessage, args: string[]) => {
     try {
       await message.react('⏳');
-
       const extraInfo = args.length > 0 ? `\nArgs: ${args.join(' ')}` : '';
 
       const startTime = Date.now();
-
       const sentMsg = await message.reply(`Pinging...${extraInfo}`);
-
       const endTime = Date.now();
       const latency = endTime - startTime;
 
-      if (sentMsg && sentMsg.key) {
+      if (sentMsg?.key) {
         await sock.sendMessage(message.key.remoteJid!, {
           text: `Pong! 🏓\nLatency: ${latency} ms`,
           edit: sentMsg.key,
         });
       } else {
-        await sock.sendMessage(message.key.remoteJid!, {
-          text: `Pong! 🏓\nLatency: ${latency} ms`,
-        });
+        await message.reply(`Pong! 🏓\nLatency: ${latency} ms`);
       }
 
       await message.react('✅');
