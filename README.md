@@ -1,12 +1,12 @@
-# X99
+# Light-MD
 
-X99 is a lightweight WhatsApp automation bot built with Bun, TypeScript and Baileys. It connects to WhatsApp, preserves session state for reliable restarts and routes incoming messages through a modular command system that makes it easy to extend.
+Light-MD is a lightweight WhatsApp automation bot built with Bun, TypeScript and Baileys. It connects to WhatsApp, preserves session state for reliable restarts and routes incoming messages through a modular command system that makes it easy to extend.
 
 ## Disclaimer
 
-X99 is intended for personal, educational and experimental use. Please use it responsibly and in accordance with WhatsApp's terms of service and local laws. Avoid spamming users or sending unsolicited messages.
+Light-MD is intended for personal, educational and experimental use. Please use it responsibly and in accordance with WhatsApp's terms of service and local laws. Avoid spamming users or sending unsolicited messages.
 
-## Why X99?
+## Why Light-MD?
 
 This project is built to turn a simple WhatsApp chat into a responsive automation layer with minimal setup:
 
@@ -98,7 +98,7 @@ const myCommand = {
   name: 'hello',
   description: 'Says hello',
   execute: async (sock, message, args) => {
-    await message.reply('Hello from X99!');
+    await message.reply('Hello from Light-MD!');
   },
 };
 
