@@ -12,17 +12,12 @@
   A minimalist, production-ready WhatsApp Bot <b>starter template and architectural foundation</b>. Built from the ground up for maximum throughput, low memory footprint, and a seamless developer experience with <b>zero-downtime live hot-reloading</b>.
 </p>
 
+<p align="center">
+  <img src="https://i.ibb.co.com/VpbqFrF1/Untitled137-20260823175359.png" alt="Bun WhatsApp Engine Web Dashboard Overview" width="100%" style="border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.5);" />
+</p>
+
 [Key Features](#-key-features) • [Installation](#-installation--quick-start) • [Configuration](#-configuration) • [Command Development](#-creating-commands) • [Web Dashboard](#-web-dashboard) • [Deployment](#-production-deployment)
 
-<p align="center">
-  <img src="https://i.ibb.co.com/VpbqFrF1/Untitled137-20260823175359.png" alt="XLliyy">
-</p>
-
-## Usage
-
-<p align="center">
-  <img src="https://i.ibb.co.com/Ldqnws5j/Untitled137-20260823180655-remove-bg-io.png" alt="star" border="0">
-</p>
 </div>
 
 ---
@@ -293,6 +288,10 @@ Every `execute(ctx)` receives an optimized `CommandContext` object:
 ## 🌐 Web Dashboard
 
 The built-in web dashboard provides real-time control and system observability directly in the browser at `http://localhost:3000`:
+
+<div align="center">
+  <img src="https://i.ibb.co.com/Ldqnws5j/Untitled137-20260823180655-remove-bg-io.png" alt="Real-Time Telemetry & Performance Metrics" width="90%" />
+</div>
 
 - **Live QR Stream:** Dynamically displays freshly generated QR codes over WebSockets.
 - **Pairing Code Generator:** Input a phone number to generate an 8-digit WhatsApp linking code.
