@@ -15,7 +15,8 @@
 [Key Features](#-key-features) • [Installation](#-installation--quick-start) • [Configuration](#-configuration) • [Command Development](#-creating-commands) • [Web Dashboard](#-web-dashboard) • [Deployment](#-production-deployment)
 
 <p align="center">
-<img height="768" width="1366" src="https://iili.io/Ctxj7GS.md.png" alt="stars" border="0"></a>
+<!-- <img height="768" width="1366" src="https://iili.io/Ctxj7GS.md.png" alt="stars" border="0"> -->
+<img src="https://i.ibb.co.com/jPwDnG4C/Pasted-image-14.png" alt="stars" border="0">
 </p>
 
 </div>
