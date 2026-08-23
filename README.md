@@ -16,7 +16,7 @@
 
 <p align="center">
 <!-- <img height="768" width="1366" src="https://iili.io/Ctxj7GS.md.png" alt="stars" border="0"> -->
-<img src="https://i.ibb.co.com/jPwDnG4C/Pasted-image-14.png" alt="stars" border="0">
+<img height="768" width="1366" src="https://i.ibb.co.com/jPwDnG4C/Pasted-image-14.png" alt="stars" border="0">
 </p>
 
 </div>
