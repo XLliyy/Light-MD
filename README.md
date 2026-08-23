@@ -3,7 +3,7 @@
 # ⚡ Bun WhatsApp Engine
 ### Ultra-Fast, Zero-Downtime WhatsApp Bot Template for Bun & TypeScript
 
-[![Bun Version](https://img.shields.io/badge/Bun-v1.1+-f472b6?style=for-the-badge&logo=bun&logoColor=black)](https://bun.sh)
+[![Bun Version](https://img.shields.io/badge/Bun-v1.4+-f472b6?style=for-the-badge&logo=bun&logoColor=black)](https://bun.sh)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178c6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Baileys](https://img.shields.io/badge/Baileys-Multi--Device-25d366?style=for-the-badge&logo=whatsapp&logoColor=white)](https://github.com/WhiskeySockets/Baileys)
 [![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
