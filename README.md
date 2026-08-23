@@ -45,7 +45,7 @@ Most WhatsApp bot repositories are bloated with hundreds of unstructured plugins
 ## 📋 System Requirements
 
 - **Operating System:** Linux (Ubuntu/Debian recommended), macOS, or Windows (via WSL2).
-- **Runtime:** [Bun](https://bun.sh) (v1.1.0 or newer).
+- **Runtime:** [Bun](https://bun.sh) (v1.4.0 or newer).
 
 ---
 
@@ -75,7 +75,7 @@ bun --version
 ### 2. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/bun-baileys-base.git
+git clone https://github.com/XLliyy/bun-baileys-base.git
 cd bun-baileys-base
 ```
 
