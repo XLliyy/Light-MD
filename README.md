@@ -290,7 +290,7 @@ Every `execute(ctx)` receives an optimized `CommandContext` object:
 The built-in web dashboard provides real-time control and system observability directly in the browser at `http://localhost:3000`:
 
 <div align="center">
-  <img src="https://i.ibb.co.com/Ldqnws5j/Untitled137-20260823180655-remove-bg-io.png" alt="Real-Time Telemetry & Performance Metrics" width="90%" />
+  <img src="https://i.ibb.co.com/XxdSBG80/Untitled137-20260823180655-remove-bg-io.png" alt="Real-Time Telemetry & Performance Metrics" width="90%" />
 </div>
 
 - **Live QR Stream:** Dynamically displays freshly generated QR codes over WebSockets.
