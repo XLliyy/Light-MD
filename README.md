@@ -75,8 +75,8 @@ bun --version
 ### 2. Clone the Repository
 
 ```bash
-git clone https://github.com/XLliyy/bun-baileys-base.git
-cd bun-baileys-base
+git clone https://github.com/XLliyy/Bun-Whatsapp-bot.git
+cd Bun-Whatsapp-bot
 ```
 
 ---
@@ -150,7 +150,7 @@ Use the Web Dashboard to scan the **QR Code** or input your phone number to rece
 ## 📂 Project Structure
 
 ```
-bun-wa/
+Bun-Whatsapp-bot/
 ├── src/
 │   ├── commands/                 # 📂 All command modules reside here (categorized)
 │   │   ├── general/              # Public commands (ping, menu, stats, help)
@@ -313,7 +313,7 @@ The built-in web dashboard provides real-time control and system observability d
 
 ### Using Systemd (Linux)
 
-Create a system service `/etc/systemd/system/bun-wa.service`:
+Create a system service `/etc/systemd/system/Bun-Whatsapp-bot.service`:
 
 ```ini
 [Unit]
@@ -323,7 +323,7 @@ After=network.target
 [Service]
 Type=simple
 User=root
-WorkingDirectory=/var/www/bun-wa
+WorkingDirectory=/var/www/Bun-Whatsapp-bot
 ExecStart=/root/.bun/bin/bun run start
 Restart=always
 RestartSec=5
@@ -336,8 +336,8 @@ WantedBy=multi-user.target
 Enable and start the service:
 ```bash
 sudo systemctl daemon-reload
-sudo systemctl enable bun-wa
-sudo systemctl start bun-wa
+sudo systemctl enable Bun-Whatsapp-bot
+sudo systemctl start Bun-Whatsapp-bot
 ```
 
 ---
@@ -361,8 +361,8 @@ CMD ["bun", "run", "start"]
 
 Build and run the container:
 ```bash
-docker build -t bun-wa .
-docker run -d --name bun-wa -p 3000:3000 -v $(pwd)/sessions:/app/sessions bun-wa
+docker build -t Bun-Whatsapp-bot .
+docker run -d --name Bun-Whatsapp-bot -p 3000:3000 -v $(pwd)/sessions:/app/sessions Bun-Whatsapp-bot
 ```
 
 ---
