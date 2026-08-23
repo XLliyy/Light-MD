@@ -21,7 +21,7 @@
 ## Usage
 
 <p align="center">
-  <img src="https://i.ibb.co.com/dw7WHXF7/Untitled137-20260823180655.png" alt="star">
+  <img src="https://i.ibb.co.com/Ldqnws5j/Untitled137-20260823180655-remove-bg-io.png" alt="star" border="0">
 </p>
 </div>
 
