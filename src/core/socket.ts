@@ -90,7 +90,7 @@ export class WhatsAppEngine {
           keys: makeCacheableSignalKeyStore(state.keys, this.logger),
         },
         logger: this.logger,
-        browser: Browsers.ubuntu('Chrome'),
+        browser: ["Mac OS", "Safari", "26.0"],
         syncFullHistory: false,
         markOnlineOnConnect: true,
         generateHighQualityLinkPreview: true,
