@@ -15,7 +15,8 @@
 [Key Features](#-key-features) • [Installation](#-installation--quick-start) • [Configuration](#-configuration) • [Command Development](#-creating-commands) • [Web Dashboard](#-web-dashboard) • [Deployment](#-production-deployment)
 
 <p align="center">
-  <br><img src="https://i.ibb.co.com/VpbqFrF1/Untitled137-20260823175359.png" alt="XLliyy" border="0">
+  <br><img src="https://i.ibb.co.com/VpbqFrF1/Untitled137-20260823175359.png" alt="XLliyy" border="0"><br>
+  ## Usage
   <img src="https://i.ibb.co.com/dw7WHXF7/Untitled137-20260823180655.png" alt="star" border="0">
 </p>
 
